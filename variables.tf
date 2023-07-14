@@ -19,25 +19,14 @@ variable "suffix" {
   default     = ""
 }
 
-variable "custom_storage_credential_name" {
-  type        = string
-  description = "Name of storage credential. If not provided will be created in format sc-{var.project}-{var.env}-{var.location}{local.suffix}"
-}
-
-variable "managed_identity_id" {
-  type        = string
-  description = "Managed credential ID to be attached to storage credential"
-}
-
-variable "storage_credential_owner" {
-  type        = string
-  description = "Storage credential owner username"
-}
-
-variable "storage_credential_grant_privileges" {
-  type        = set(string)
-  description = "Privileges granted to storage credentials"
-  default     = ["CREATE_EXTERNAL_LOCATION", "CREATE_EXTERNAL_TABLE", "READ_FILES", "WRITE_FILES"]
+variable "storage_credential" {
+  type = object({
+    custom_name         = optional(string)
+    owner               = string
+    managed_identity_id = string
+    privileges          = set(string)
+  })
+  description = "Map of external location names to its owner, ur, privileges"
 }
 
 variable "external_locations" {

@@ -13,6 +13,12 @@ locals {
       privileges = ["CREATE_EXTERNAL_TABLE", "READ_FILES", "CREATE_MANAGED_STORAGE", "WRITE_FILES"]
     }
   }
+  storage_credential = {
+    custom_name = "custom_credentials"
+    owner = "username@domain.com"
+    managed_identity_id = var.managed_identity_id
+    privileges = ["CREATE_EXTERNAL_LOCATION", "CREATE_EXTERNAL_TABLE", "READ_FILES", "WRITE_FILES"]
+  }
 }
 
 # Prerequisite resources
@@ -38,11 +44,9 @@ module "databricks_locations" {
   env                                 = var.env
   project                             = var.project
   location                            = var.location
-  custom_storage_credential_name      = "custom_credentials"
-  storage_credential_grant_privileges = ["CREATE_EXTERNAL_LOCATION", "CREATE_EXTERNAL_TABLE", "READ_FILES", "WRITE_FILES"]
+  
+  storage_credential = local.storage_credential
   external_locations = local.external_locations
-  managed_identity_id      = var.managed_identity_id
-  storage_credential_owner = "username@domain.com"
 
   providers = {
     databricks = databricks.main
@@ -80,17 +84,14 @@ No modules.
 
 ## Inputs
 
-| Name                                                                                                                                              | Description                                                                                                                   | Type                                                                                                                                    | Default                                                                             | Required |
-|---------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|:--------:|
-| <a name="input_project"></a> [project](#input\_project)                                                                                           | Project name                                                                                                                  | `string`                                                                                                                                | n/a                                                                                 |   yes    |
-| <a name="input_env"></a> [env](#input\_env)                                                                                                       | Environment name                                                                                                              | `string`                                                                                                                                | n/a                                                                                 |   yes    |
-| <a name="input_location"></a> [location](#input\_location)                                                                                        | Azure location                                                                                                                | `string`                                                                                                                                | n/a                                                                                 |   yes    |
-| <a name="input_suffix"></a> [suffix](#input\_suffix)                                                                                              | Name suffix                                                                                                                   | `string`                                                                                                                                | `""`                                                                                |    no    |
-| <a name="input_custom_storage_credential_name"></a> [custom\_storage\_credential\_name](#input\_custom\_storage\_credential\_name)                | Name of storage credential. If not provided will be created in format sc-{var.project}-{var.env}-{var.location}{local.suffix} | `string`                                                                                                                                | n/a                                                                                 |    no    |
-| <a name="input_managed_identity_id"></a> [managed\_identity\_id](#input\_managed\_identity\_id)                                                   | Managed credential ID to be attached to storage credential                                                                    | `string`                                                                                                                                | `""`                                                                                |   yes    |
-| <a name="input_storage_credential_owner"></a> [storage\_credential\_owner](#input\_storage\_credential\_owner)                                    | Storage credential owner username                                                                                             | `string`                                                                                                                                | `""`                                                                                |   yes    |
-| <a name="input_storage_credential_grant_privileges"></a> [storage\_credential\_grant\_privileges](#input\_storage\_credential\_grant\_privileges) | Privileges granted to storage credentials                                                                                     | `set(string)`                                                                                                                           | ["CREATE_EXTERNAL_LOCATION", "CREATE_EXTERNAL_TABLE", "READ_FILES", "WRITE_FILES"]  |    no    |
-| <a name="input_external_locations"></a> [external\_locations](#input\_external\_locations)                                                        | Map of external location names to its owner, ur, privileges                                                                   | <pre>map(object({<br> owner = optional(string) <br> url  = optional(string) <br> privileges    = optional(set(string)) <br>}))</pre>    | {}                                                                                  |    no    |
+| Name                                                                                                          | Description                                                                   | Type                                                                                                                                                                             | Default | Required |
+|---------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|:--------:|
+| <a name="input_project"></a> [project](#input\_project)                                                       | Project name                                                                  | `string`                                                                                                                                                                         | n/a     |   yes    |
+| <a name="input_env"></a> [env](#input\_env)                                                                   | Environment name                                                              | `string`                                                                                                                                                                         | n/a     |   yes    |
+| <a name="input_location"></a> [location](#input\_location)                                                    | Azure location                                                                | `string`                                                                                                                                                                         | n/a     |   yes    |
+| <a name="input_suffix"></a> [suffix](#input\_suffix)                                                          | Name suffix                                                                   | `string`                                                                                                                                                                         | `""`    |    no    |
+| <a name="input_storage_credential_grant_privileges"></a> [storage\_credential](#input\_storage\_credential)   | Parameters required for storage credential cration. Custom name is optional   | <pre>object({<br> custom_name         = optional(string) <br> owner               = string <br> managed_identity_id = string <br> privileges          = set(string) <br>})</pre> | n/a     |   yes    |
+| <a name="input_external_locations"></a> [external\_locations](#input\_external\_locations)                    | Map of external location names to its owner, ur, privileges                   | <pre>map(object({<br> owner      = optional(string) <br> url        = optional(string) <br> privileges = optional(set(string)) <br>}))</pre>                                     | {}      |    no    |
 
 
 
