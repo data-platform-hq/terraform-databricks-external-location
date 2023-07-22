@@ -25,6 +25,7 @@ variable "storage_credential" {
       privileges = list(string)
     })), [])
   })
+  description = "Configuration options for Storage Credentials"
 
   validation {
     condition     = anytrue([length(var.storage_credential.name) != 0, length(var.storage_credential.prefix) != 0, ])
@@ -45,5 +46,6 @@ variable "external_locations" {
       privileges = list(string)
     })), [])
   }))
-  default = []
+  description = "Configuration options for External Locations"
+  default     = []
 }
