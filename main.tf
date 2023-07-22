@@ -3,14 +3,12 @@ locals {
 
   # Maps 'external_locations' object, conditionally validates if 'name' parameter is provided
   external_locations_mapped = {
-    for object in var.external_locations : object.name => object
-    if length(object.name) != 0
+    for object in var.external_locations : object.name => object if length(object.name) != 0
   }
 
   # Filters 'external_locations' mapped local variable for existing valid permissions
   external_locations_permissions_mapped = {
-    for k, v in local.external_locations_mapped : k => v.permissions
-    if length(v.permissions) != 0
+    for k, v in local.external_locations_mapped : k => v.permissions if length(v.permissions) != 0
   }
 }
 
