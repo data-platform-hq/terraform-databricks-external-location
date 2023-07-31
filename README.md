@@ -41,14 +41,16 @@ locals {
       url         = "abfss://container@storageaccount.dfs.core.windows.net"
       permissions = [
         { principal = "ALL_PRIVILEGES_GROUP", privileges = ["ALL_PRIVILEGES"] },
-        { principal = "READ_FILES_GROUP", privileges     = ["CREATE_EXTERNAL_TABLE", "READ_FILES"] },
+        { principaprincipal = "EXAMPLE_PERMISSION_GROUP", privileges = ["CREATE_EXTERNAL_TABLE", "READ_FILES"] }
       ]    
       owner           = "username@domain.com"
       skip_validation = true
       read_only       = false
+      comment         = "example_comment"
     }    
 }
 
+# Databricks External Location 
 module "databricks_locations" {
   count  = var.databricks_configure ? (module.databricks_workspace.sku == "premium" ? 1 : 0) : 0
 
@@ -65,7 +67,6 @@ module "databricks_locations" {
     databricks = databricks.workspace
   }
 }
-
 ```
 
 <!-- BEGIN_TF_DOCS -->
