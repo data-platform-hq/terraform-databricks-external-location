@@ -31,33 +31,25 @@ provider "databricks" {
 locals {
   storage_credentials = {
     prefix                    = "example"
-    azure_access_connector_id = try(azurerm_databricks_access_connector.example.id, null)
+    azure_access_connector_id = azurerm_databricks_access_connector.example.id
     permissions               = [{ principal = "ALL_PRIVILEGES_GROUP", privileges = ["ALL_PRIVILEGES"] }]
   }
   
-  external_locations = flatten([
+  external_locations = 
     {
       name        = "adls-example"
-      url         = "abfss://${module.adls[local.adls_data_name].name}@${module.storage_account.name}.dfs.core.windows.net"
+      url         = "abfss://container@storageaccount.dfs.core.windows.net"
       permissions = [
-        { principal = "iacda_rw", privileges = ["ALL_PRIVILEGES"] },
-        { principal = "dpdf_rw", privileges = ["CREATE_EXTERNAL_TABLE", "READ_FILES"] },
-      ]
-    }, [
-    for object in var.databricks_additional_external_locations : {
-      name            = object.name
-      url             = "abfss://${object.adls_filesystem_name}@${object.storage_account_name}.dfs.core.windows.net"
-      owner           = object.owner
-      skip_validation = object.skip_validation
-      read_only       = object.read_only
-      comment         = object.comment
-      permissions     = object.permissions
-    } if length(object.name) != 0
-    ]
-  ])
+        { principal = "ALL_PRIVILEGES_GROUP", privileges = ["ALL_PRIVILEGES"] },
+        { principal = "READ_FILES_GROUP", privileges     = ["CREATE_EXTERNAL_TABLE", "READ_FILES"] },
+      ]    
+      owner           = "username@domain.com"
+      skip_validation = true
+      read_only       = false
+    }    
 }
 
-module "credentials" {
+module "databricks_locations" {
   count  = var.databricks_configure ? (module.databricks_workspace.sku == "premium" ? 1 : 0) : 0
 
   source  = "data-platform-hq/external-location/databricks"
