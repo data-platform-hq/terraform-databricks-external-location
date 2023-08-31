@@ -1,41 +1,64 @@
 locals {
-  suffix                  = length(var.suffix) == 0 ? "" : "-${var.suffix}"
-  storage_credential_name = var.storage_credential.custom_name == null ? "sc-${var.project}-${var.env}-${var.location}${local.suffix}" : "${var.storage_credential.custom_name}${local.suffix}"
+  # Maps 'external_locations' object, conditionally validates if 'name' parameter is provided
+  external_locations_mapped = {
+    for object in var.external_locations : object.name => object
+    if length(object.name) != 0
+  }
+
+  # Filters 'external_locations' mapped local variable for existing valid permissions
+  external_locations_permissions_mapped = {
+    for k, v in local.external_locations_mapped : k => v.permissions
+    if length(v.permissions) != 0
+  }
 }
 
 resource "databricks_storage_credential" "this" {
-  name  = local.storage_credential_name
+  name  = var.storage_credential.name
   owner = var.storage_credential.owner
+
   azure_managed_identity {
-    access_connector_id = var.storage_credential.managed_identity_id
+    access_connector_id = var.storage_credential.azure_access_connector_id
   }
-  comment = "Managed identity credential managed by TF"
+
+  comment = var.storage_credential.comment
 }
 
 resource "databricks_grants" "credential" {
+  count = length(var.storage_credential.permissions) != 0 ? 1 : 0
+
   storage_credential = databricks_storage_credential.this.id
-  grant {
-    principal  = var.storage_credential.owner
-    privileges = var.storage_credential.privileges
+  dynamic "grant" {
+    for_each = var.storage_credential.permissions
+    content {
+      principal  = grant.value.principal
+      privileges = grant.value.privileges
+    }
   }
 }
 
 resource "databricks_external_location" "this" {
-  for_each = var.external_locations
+  for_each = local.external_locations_mapped
 
   name            = each.key
   owner           = each.value.owner
   url             = each.value.url
   credential_name = databricks_storage_credential.this.id
-  comment         = "Managed by TF"
+  comment         = each.value.comment
+  skip_validation = each.value.skip_validation
+  read_only       = each.value.read_only
 }
 
 resource "databricks_grants" "locations" {
-  for_each = var.external_locations
+  for_each = local.external_locations_permissions_mapped
 
   external_location = databricks_external_location.this[each.key].id
-  grant {
-    principal  = "account users"
-    privileges = each.value.privileges
+  dynamic "grant" {
+    for_each = each.value
+    content {
+      principal  = grant.value.principal
+      privileges = grant.value.privileges
+    }
   }
+
+  depends_on = [databricks_grants.credential]
 }
