@@ -9,6 +9,7 @@ variable "storage_credential" {
       privileges = list(string)
     })), [])
   })
+  description = "Object with storage credentials configuration attributes"
 }
 
 variable "external_locations" {
@@ -24,6 +25,6 @@ variable "external_locations" {
       privileges = list(string)
     })), [])
   }))
-  #  description = "Map of external location names to its owner, ur, privileges"
-  default = []
+  description = "List of object with external location configuration attributes"
+  default     = []
 }
