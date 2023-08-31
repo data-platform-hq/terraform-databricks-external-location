@@ -26,5 +26,5 @@ variable "external_locations" {
     })), [])
   }))
   description = "List of object with external location configuration attributes"
-  default = []
+  default     = []
 }
