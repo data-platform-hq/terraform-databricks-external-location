@@ -5,7 +5,7 @@ output "storage_credential_name" {
 
 output "storage_credential_metastore_id" {
   value       = databricks_storage_credential.this.metastore_id
-  description = "Storage Credential Metastore id"
+  description = "Storage Credential metastore id"
 }
 
 output "external_locations" {
