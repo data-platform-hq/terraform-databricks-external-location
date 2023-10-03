@@ -47,6 +47,8 @@ resource "databricks_external_location" "this" {
   comment         = each.value.comment
   skip_validation = each.value.skip_validation
   read_only       = each.value.read_only
+  force_destroy   = each.value.force_destroy
+  force_update    = each.value.force_update
 }
 
 resource "databricks_grants" "locations" {
