@@ -3,6 +3,7 @@ variable "storage_credential" {
     azure_access_connector_id = string           # Azure Databricks Access Connector Id
     name                      = string           # Custom whole name of resource
     owner                     = optional(string) # Owner of resource
+    force_destroy             = optional(bool, true)
     comment                   = optional(string, "Managed identity credential provisioned by Terraform")
     permissions = optional(set(object({
       principal  = string
