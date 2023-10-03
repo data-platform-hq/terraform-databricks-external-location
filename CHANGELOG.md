@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.0.1...v1.1.0) (2023-10-03)
+
+
+### Features
+
+* force_destroy support in storage creds ([843ad96](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/843ad96cd9f399ed98a506eebeeb1c9ca21fbace))
+
 ## [1.0.1](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.0.0...v1.0.1) (2023-08-31)
 
 
