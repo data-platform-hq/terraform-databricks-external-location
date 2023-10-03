@@ -20,6 +20,8 @@ variable "external_locations" {
     owner           = optional(string)      # Owner of resource
     skip_validation = optional(bool, true)  # Suppress validation errors if any & force save the external location
     read_only       = optional(bool, false) # Indicates whether the external location is read-only.
+    force_destroy   = optional(bool,true)
+    force_update    = optional(bool,true)
     comment         = optional(string, "External location provisioned by Terraform")
     permissions = optional(set(object({
       principal  = string
