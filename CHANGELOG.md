@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.1.0...v1.1.1) (2023-10-03)
+
+
+### Bug Fixes
+
+* external location force action support ([27274fc](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/27274fcd55efba62f6491deb37d88e5b8563d92a))
+
 # [1.1.0](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.0.1...v1.1.0) (2023-10-03)
 
 
