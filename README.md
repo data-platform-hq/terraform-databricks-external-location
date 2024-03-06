@@ -72,16 +72,17 @@ module "databricks_locations" {
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-| Name                                                                         | Version   |
-| ---------------------------------------------------------------------------- |-----------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform)    | >= 1.0.0  |
-| <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.27.0 |
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.0.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.40.0 |
+| <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >=1.27.0 |
 
 ## Providers
 
-| Name                                                                   | Version |
-| ---------------------------------------------------------------------- |---------|
-| <a name="provider_databricks"></a> [databricks](#provider\_databricks) | 1.27.0  |
+| Name | Version |
+|------|---------|
+| <a name="provider_databricks"></a> [databricks](#provider\_databricks) | >=1.27.0 |
 
 ## Modules
 
@@ -89,30 +90,27 @@ No modules.
 
 ## Resources
 
-| Name                                                                                                                                         | Type     |
-|----------------------------------------------------------------------------------------------------------------------------------------------| -------- |
+| Name | Type |
+|------|------|
+| [databricks_external_location.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/external_location) | resource |
+| [databricks_grants.credential](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants) | resource |
+| [databricks_grants.locations](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants) | resource |
 | [databricks_storage_credential.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/storage_credential) | resource |
-| [databricks_grants.credential](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants)                   | resource |
-| [databricks_external_location.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/external_location)   | resource |
-| [databricks_grants.locations](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants)                    | resource |
 
 ## Inputs
 
-| Name | Description | Type | Default                                                                                                                                               | Required |
-|------|-------------|------|-------------------------------------------------------------------------------------------------------------------------------------------------------|:--------:|
-| <a name="input_project"></a> [project](#input\_project)| Project name | `string` | n/a | yes |
-| <a name="input_env"></a> [env](#input\_env)| Environment name | `string` | n/a | yes |
-| <a name="input_location"></a> [resource\_location](#input\_location)| Azure location | `string` | n/a | yes |
-| <a name="input_storage_credential"></a> [storage\_credential](#input\_storage\_credential)| Configuration options for Storage Credentials | <pre>object({<br>  azure_access_connector_id = string<br>  name                      = optional(string)<br>  prefix                    = optional(string)<br>  owner                     = optional(string)<br>  comment                   = optional(string)<br>  permissions = optional(set(object({<br>    principal  = string<br>    privileges = list(string)<br>  })))<br>})</pre>  | <pre>object({<br>  azure_access_connector_id = string<br>  name                      = optional(string, "")<br>  prefix                    = optional(string, "")<br>  owner                     = optional(string)<br>  comment                   = optional(string, "Managed identity credential provisioned by Terraform")<br>  permissions = optional(set(object({<br>    principal  = string<br>    privileges = list(string)<br>  })), [])<br>})</pre>  | no |
-| <a name="input_external_locations"></a> [external\_locations](#input\_external\_locations)| Configuration options for External Locations | <pre>set(object({<br>  name            = string<br>  url             = string<br>  owner           = optional(string)<br>  skip_validation = optional(bool)<br>  read_only       = optional(bool)<br>  comment         = optional(string)<br>  permissions = optional(set(object({<br>    principal  = string<br>    privileges = list(string)<br>  }))<br>}))</pre> | <pre>set(object({<br>  name            = string<br>  url             = string<br>  owner           = optional(string)<br>  skip_validation = optional(bool, true)<br>  read_only       = optional(bool, false)<br>  comment         = optional(string, "External location provisioned by Terraform")<br>  permissions = optional(set(object({<br>    principal  = string<br>    privileges = list(string)<br>  })), [])<br>}))</pre> | yes |
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_external_locations"></a> [external\_locations](#input\_external\_locations) | List of object with external location configuration attributes | <pre>list(object({<br>    name            = string                # Custom whole name of resource<br>    url             = string                # Path URL in cloud storage<br>    owner           = optional(string)      # Owner of resource<br>    skip_validation = optional(bool, true)  # Suppress validation errors if any & force save the external location<br>    read_only       = optional(bool, false) # Indicates whether the external location is read-only.<br>    force_destroy   = optional(bool, true)<br>    force_update    = optional(bool, true)<br>    comment         = optional(string, "External location provisioned by Terraform")<br>    permissions = optional(set(object({<br>      principal  = string<br>      privileges = list(string)<br>    })), [])<br>  }))</pre> | `[]` | no |
+| <a name="input_storage_credential"></a> [storage\_credential](#input\_storage\_credential) | Object with storage credentials configuration attributes | <pre>object({<br>    azure_access_connector_id = string           # Azure Databricks Access Connector Id<br>    name                      = string           # Custom whole name of resource<br>    owner                     = optional(string) # Owner of resource<br>    force_destroy             = optional(bool, true)<br>    comment                   = optional(string, "Managed identity credential provisioned by Terraform")<br>    permissions = optional(set(object({<br>      principal  = string<br>      privileges = list(string)<br>    })), [])<br>  })</pre> | n/a | yes |
 
 ## Outputs
 
-| Name                                                                                                                          | Description                                          |
-| ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| <a name="output_storage_credential_name"></a> [storage\_credential\_name](#output\_storage\_credential\_name)                 | Storage Credential name                              |
-| <a name="output_storage_credential_metastore_id"></a> [storage\_credential\_metastore\_id](#output\_storage\_credential\_metastore\_id) | Storage Credential Metastore id            |
-| <a name="output_external_locations"></a> [external\_locations](#output\_external\_locations)                 | Object with External Location parameters, like name, credentials name and url of target storage |
+| Name | Description |
+|------|-------------|
+| <a name="output_external_locations"></a> [external\_locations](#output\_external\_locations) | Object with External Location parameters, like name, credentials name and url of target storage |
+| <a name="output_storage_credential_metastore_id"></a> [storage\_credential\_metastore\_id](#output\_storage\_credential\_metastore\_id) | Storage Credential metastore id |
+| <a name="output_storage_credential_name"></a> [storage\_credential\_name](#output\_storage\_credential\_name) | Storage Credential name |
 <!-- END_TF_DOCS -->
 
 ## License
