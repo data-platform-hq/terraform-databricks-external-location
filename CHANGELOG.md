@@ -1,3 +1,12 @@
+## [1.1.2](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.1.1...v1.1.2) (2024-03-13)
+
+
+### Bug Fixes
+
+* added security KICS scan action ([aae6223](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/aae6223432a4a3a5ffac392e241959a748a27b40))
+* replaced pre-commit repo docs creation/update by GH Actions ([c3a2b64](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/c3a2b643a4d1d0be3b89b4d49e619af8c34a8b05))
+* updated outputs ([43bb5a2](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/43bb5a2dd1fcc462851f158b68009fca6b25dd88))
+
 ## [1.1.1](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.1.0...v1.1.1) (2023-10-03)
 
 
