@@ -108,7 +108,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_external_locations"></a> [external\_locations](#output\_external\_locations) | Object with External Location parameters, like name, credentials name and url of target storage |
+| <a name="output_external_locations"></a> [external\_locations](#output\_external\_locations) | Map of objects with External Location parameters, like name, credentials name and url of target storage |
 | <a name="output_storage_credential_metastore_id"></a> [storage\_credential\_metastore\_id](#output\_storage\_credential\_metastore\_id) | Storage Credential metastore id |
 | <a name="output_storage_credential_name"></a> [storage\_credential\_name](#output\_storage\_credential\_name) | Storage Credential name |
 <!-- END_TF_DOCS -->
