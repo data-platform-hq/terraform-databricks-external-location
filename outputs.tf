@@ -9,10 +9,10 @@ output "storage_credential_metastore_id" {
 }
 
 output "external_locations" {
-  value = [for key in keys(local.external_locations_mapped) : {
+  value = {for key in keys(local.external_locations_mapped) : key => {
     credential_name = databricks_external_location.this[key].credential_name
     location_name   = databricks_external_location.this[key].name
     url             = databricks_external_location.this[key].url
-  }]
-  description = "Object with External Location parameters, like name, credentials name and url of target storage"
+  }}
+  description = "Map of objects with External Location parameters, like name, credentials name and url of target storage"
 }
