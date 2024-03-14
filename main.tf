@@ -1,8 +1,8 @@
 locals {
   # Maps 'external_locations' object, conditionally validates if 'name' parameter is provided
   external_locations_mapped = {
-    for object in var.external_locations : object.name => object
-    if length(object.name) != 0
+    for object in var.external_locations : object.index => object
+    if length(object.index) != 0
   }
 
   # Filters 'external_locations' mapped local variable for existing valid permissions
@@ -40,7 +40,7 @@ resource "databricks_grants" "credential" {
 resource "databricks_external_location" "this" {
   for_each = local.external_locations_mapped
 
-  name            = each.key
+  name            = each.value.name
   owner           = each.value.owner
   url             = each.value.url
   credential_name = databricks_storage_credential.this.id

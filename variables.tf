@@ -15,6 +15,7 @@ variable "storage_credential" {
 
 variable "external_locations" {
   type = list(object({
+    index           = string                # Index of instance, for example short name, used later to access exact external location in output map
     name            = string                # Custom whole name of resource
     url             = string                # Path URL in cloud storage
     owner           = optional(string)      # Owner of resource
