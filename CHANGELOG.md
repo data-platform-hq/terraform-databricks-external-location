@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.1.2...v1.1.3) (2024-03-14)
+
+
+### Bug Fixes
+
+* added index iterator; refactored output to map ([f357220](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/f357220dba32c513c6530a274baf4032be848c49))
+
 ## [1.1.2](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.1.1...v1.1.2) (2024-03-13)
 
 
