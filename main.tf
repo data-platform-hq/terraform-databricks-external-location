@@ -49,6 +49,7 @@ resource "databricks_external_location" "this" {
   read_only       = each.value.read_only
   force_destroy   = each.value.force_destroy
   force_update    = each.value.force_update
+  isolation_mode  = each.value.isolation_mode
 }
 
 resource "databricks_grants" "locations" {

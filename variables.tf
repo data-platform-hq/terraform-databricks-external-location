@@ -28,6 +28,7 @@ variable "external_locations" {
       principal  = string
       privileges = list(string)
     })), [])
+    isolation_mode = optional(string, "OPEN")
   }))
   description = "List of object with external location configuration attributes"
   default     = []
