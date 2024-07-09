@@ -76,13 +76,13 @@ module "databricks_locations" {
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.0.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.40.0 |
-| <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >=1.27.0 |
+| <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >=1.48.2 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_databricks"></a> [databricks](#provider\_databricks) | >=1.27.0 |
+| <a name="provider_databricks"></a> [databricks](#provider\_databricks) | >=1.48.2 |
 
 ## Modules
 
@@ -101,8 +101,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_external_locations"></a> [external\_locations](#input\_external\_locations) | List of object with external location configuration attributes | <pre>list(object({<br>    index           = string                # Index of instance, for example short name, used later to access exact external location in output map<br>    name            = string                # Custom whole name of resource<br>    url             = string                # Path URL in cloud storage<br>    owner           = optional(string)      # Owner of resource<br>    skip_validation = optional(bool, true)  # Suppress validation errors if any & force save the external location<br>    read_only       = optional(bool, false) # Indicates whether the external location is read-only.<br>    force_destroy   = optional(bool, true)<br>    force_update    = optional(bool, true)<br>    comment         = optional(string, "External location provisioned by Terraform")<br>    permissions = optional(set(object({<br>      principal  = string<br>      privileges = list(string)<br>    })), [])<br>  }))</pre> | `[]` | no |
-| <a name="input_storage_credential"></a> [storage\_credential](#input\_storage\_credential) | Object with storage credentials configuration attributes | <pre>object({<br>    azure_access_connector_id = string           # Azure Databricks Access Connector Id<br>    name                      = string           # Custom whole name of resource<br>    owner                     = optional(string) # Owner of resource<br>    force_destroy             = optional(bool, true)<br>    comment                   = optional(string, "Managed identity credential provisioned by Terraform")<br>    permissions = optional(set(object({<br>      principal  = string<br>      privileges = list(string)<br>    })), [])<br>  })</pre> | n/a | yes |
+| <a name="input_external_locations"></a> [external\_locations](#input\_external\_locations) | List of object with external location configuration attributes | <pre>list(object({<br>    index           = string                # Index of instance, for example short name, used later to access exact external location in output map<br>    name            = string                # Custom whole name of resource<br>    url             = string                # Path URL in cloud storage<br>    owner           = optional(string)      # Owner of resource<br>    skip_validation = optional(bool, true)  # Suppress validation errors if any & force save the external location<br>    read_only       = optional(bool, false) # Indicates whether the external location is read-only.<br>    force_destroy   = optional(bool, true)<br>    force_update    = optional(bool, true)<br>    comment         = optional(string, "External location provisioned by Terraform")<br>    permissions = optional(set(object({<br>      principal  = string<br>      privileges = list(string)<br>    })), [])<br>    isolation_mode = optional(string, "OPEN")<br>  }))</pre> | `[]` | no |
+| <a name="input_storage_credential"></a> [storage\_credential](#input\_storage\_credential) | Object with storage credentials configuration attributes | <pre>object({<br>    azure_access_connector_id = string           # Azure Databricks Access Connector Id<br>    name                      = string           # Custom whole name of resource<br>    owner                     = optional(string) # Owner of resource<br>    force_destroy             = optional(bool, true)<br>    comment                   = optional(string, "Managed identity credential provisioned by Terraform")<br>    permissions = optional(set(object({<br>      principal  = string<br>      privileges = list(string)<br>    })), [])<br>    isolation_mode = optional(string, "OPEN")<br>  })</pre> | n/a | yes |
 
 ## Outputs
 
