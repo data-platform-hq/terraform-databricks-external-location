@@ -12,7 +12,21 @@ locals {
   }
 }
 
-resource "databricks_storage_credential" "this" {
+resource "databricks_storage_credential" "gcp" {
+  count = var.storage_credential.cloud == "gcp" ? 1 : 0
+
+  name  = var.storage_credential.name
+  owner = var.storage_credential.owner
+
+  databricks_gcp_service_account {}
+
+  force_destroy = var.storage_credential.force_destroy
+  comment       = var.storage_credential.comment
+}
+
+resource "databricks_storage_credential" "azure" {
+  count = var.storage_credential.cloud == "azure" ? 1 : 0
+
   name  = var.storage_credential.name
   owner = var.storage_credential.owner
 
@@ -27,7 +41,7 @@ resource "databricks_storage_credential" "this" {
 resource "databricks_grants" "credential" {
   count = length(var.storage_credential.permissions) != 0 ? 1 : 0
 
-  storage_credential = databricks_storage_credential.this.id
+  storage_credential = coalesce(try(databricks_storage_credential.azure[0].id, null), try(databricks_storage_credential.gcp[0].id, null))
   dynamic "grant" {
     for_each = var.storage_credential.permissions
     content {
@@ -43,7 +57,7 @@ resource "databricks_external_location" "this" {
   name            = each.value.name
   owner           = each.value.owner
   url             = each.value.url
-  credential_name = databricks_storage_credential.this.id
+  credential_name = coalesce(try(databricks_storage_credential.azure[0].id, null), try(databricks_storage_credential.gcp[0].id, null))
   comment         = each.value.comment
   skip_validation = each.value.skip_validation
   read_only       = each.value.read_only
