@@ -25,6 +25,7 @@ variable "external_locations" {
     force_destroy   = optional(bool, true)
     force_update    = optional(bool, true)
     comment         = optional(string, "External location provisioned by Terraform")
+    isolation_mode  = optional(string, null)
     permissions = optional(set(object({
       principal  = string
       privileges = list(string)
