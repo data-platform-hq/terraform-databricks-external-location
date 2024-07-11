@@ -1,6 +1,6 @@
 variable "storage_credential" {
   type = object({
-    azure_access_connector_id = optional(string, null)           # Azure Databricks Access Connector Id
+    azure_access_connector_id = optional(string, null) # Azure Databricks Access Connector Id
     cloud                     = optional(string, "azure")
     name                      = string           # Custom whole name of resource
     owner                     = optional(string) # Owner of resource
