@@ -20,8 +20,9 @@ resource "databricks_storage_credential" "this" {
     access_connector_id = var.storage_credential.azure_access_connector_id
   }
 
-  force_destroy = var.storage_credential.force_destroy
-  comment       = var.storage_credential.comment
+  force_destroy  = var.storage_credential.force_destroy
+  comment        = var.storage_credential.comment
+  isolation_mode = var.storage_credential.isolation_mode
 }
 
 resource "databricks_grants" "credential" {
