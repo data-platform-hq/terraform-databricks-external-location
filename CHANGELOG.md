@@ -1,3 +1,16 @@
+# [1.2.0](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.1.3...v1.2.0) (2024-07-17)
+
+
+### Bug Fixes
+
+* fmt ([2d6b738](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/2d6b7380caa5a4a801be3fdac29d1b0d6bb2d2fe))
+
+
+### Features
+
+* gcp support ([f27a25f](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/f27a25fac8b622a021ac91d56cc461f2ab315f89))
+* isolation_mode support, provider upgrade ([a817090](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/a8170901d38f97863a5923853eb93dbb3d110a6e))
+
 ## [1.1.3](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.1.2...v1.1.3) (2024-03-14)
 
 
