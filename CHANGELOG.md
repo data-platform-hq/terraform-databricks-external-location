@@ -1,3 +1,16 @@
+# [1.3.0](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.2.0...v1.3.0) (2024-07-18)
+
+
+### Bug Fixes
+
+* add isolation_mode to storage credentials ([ac4c904](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/ac4c904bf45b824034c2007a2723fa00f3546466))
+* changed isolation_mode default value ([e886bf0](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/e886bf025ed8bafd0adaf3deeb6a33c03acca71b))
+
+
+### Features
+
+* isolation mode support ([1f970ce](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/1f970ce20698cbf330ade24f037e709a35b18942))
+
 # [1.2.0](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.1.3...v1.2.0) (2024-07-17)
 
 
