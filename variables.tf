@@ -10,6 +10,7 @@ variable "storage_credential" {
       principal  = string
       privileges = list(string)
     })), [])
+    isolation_mode = optional(string, "ISOLATION_MODE_OPEN")
   })
   description = "Object with storage credentials configuration attributes"
 }
@@ -30,6 +31,7 @@ variable "external_locations" {
       principal  = string
       privileges = list(string)
     })), [])
+    isolation_mode = optional(string, "ISOLATION_MODE_OPEN")
   }))
   description = "List of object with external location configuration attributes"
   default     = []
