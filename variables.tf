@@ -1,6 +1,7 @@
 variable "storage_credential" {
   type = object({
-    azure_access_connector_id = string           # Azure Databricks Access Connector Id
+    azure_access_connector_id = optional(string, null) # Azure Databricks Access Connector Id
+    cloud                     = optional(string, "azure")
     name                      = string           # Custom whole name of resource
     owner                     = optional(string) # Owner of resource
     force_destroy             = optional(bool, true)
@@ -25,6 +26,7 @@ variable "external_locations" {
     force_destroy   = optional(bool, true)
     force_update    = optional(bool, true)
     comment         = optional(string, "External location provisioned by Terraform")
+    isolation_mode  = optional(string, null)
     permissions = optional(set(object({
       principal  = string
       privileges = list(string)
