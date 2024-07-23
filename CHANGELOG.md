@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.3.0...v1.3.1) (2024-07-23)
+
+
+### Bug Fixes
+
+* delete duplicate variable ([38dd58a](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/38dd58a454fe05771d5cb5270fbc8f398003033b))
+
 # [1.3.0](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.2.0...v1.3.0) (2024-07-18)
 
 
