@@ -75,7 +75,7 @@ module "databricks_locations" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.0.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.40.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.0.1 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >=1.48.3 |
 
 ## Providers
