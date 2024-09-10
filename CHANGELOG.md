@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.3.1...v1.4.0) (2024-09-10)
+
+
+### Features
+
+* upgrade to AzureRM v4 ([6495249](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/6495249198cd28e129da7cf8b7facdc82a43df10))
+
 ## [1.3.1](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.3.0...v1.3.1) (2024-07-23)
 
 
