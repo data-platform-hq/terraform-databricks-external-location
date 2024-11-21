@@ -1,10 +1,10 @@
 output "storage_credential_name" {
-  value       = coalesce(try(databricks_storage_credential.azure[0].name, null), try(databricks_storage_credential.gcp[0].name, null))
+  value       = try(databricks_storage_credential.this[0].name, null)
   description = "Storage Credential name"
 }
 
 output "storage_credential_metastore_id" {
-  value       = coalesce(try(databricks_storage_credential.azure[0].metastore_id, null), try(databricks_storage_credential.gcp[0].metastore_id, null))
+  value       = try(databricks_storage_credential.this[0].metastore_id, null)
   description = "Storage Credential metastore id"
 }
 
@@ -18,6 +18,6 @@ output "external_locations" {
 }
 
 output "databricks_gcp_service_account" {
-  value       = try(databricks_storage_credential.gcp[0].databricks_gcp_service_account[0].email, null)
+  value       = try(databricks_storage_credential.this[0].databricks_gcp_service_account[0].email, null)
   description = "The email of the GCP service account created, to be granted access to relevant buckets"
 }

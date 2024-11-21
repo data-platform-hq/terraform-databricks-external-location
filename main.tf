@@ -12,37 +12,35 @@ locals {
   }
 }
 
-resource "databricks_storage_credential" "gcp" {
-  count = var.storage_credential.cloud == "gcp" ? 1 : 0
+resource "databricks_storage_credential" "this" {
+  count = var.storage_credential.cloud != "" ? 1 : 0
 
   name  = var.storage_credential.name
   owner = var.storage_credential.owner
 
-  databricks_gcp_service_account {}
+  # Dynamic block for Azure
+  dynamic "azure_managed_identity" {
+    for_each = var.storage_credential.cloud == "azure" ? [1] : []
+    content {
+      access_connector_id = var.storage_credential.azure_access_connector_id
+    }
+  }
 
-  force_destroy = var.storage_credential.force_destroy
-  comment       = var.storage_credential.comment
-}
-
-resource "databricks_storage_credential" "azure" {
-  count = var.storage_credential.cloud == "azure" ? 1 : 0
-
-  name  = var.storage_credential.name
-  owner = var.storage_credential.owner
-
-  azure_managed_identity {
-    access_connector_id = var.storage_credential.azure_access_connector_id
+  # Dynamic block for GCP
+  dynamic "databricks_gcp_service_account" {
+    for_each = var.storage_credential.cloud == "gcp" ? [1] : []
+    content {}
   }
 
   force_destroy  = var.storage_credential.force_destroy
   comment        = var.storage_credential.comment
-  isolation_mode = var.storage_credential.isolation_mode
+  isolation_mode = var.storage_credential.cloud == "azure" ? var.storage_credential.isolation_mode : null
 }
 
 resource "databricks_grants" "credential" {
-  count = length(var.storage_credential.permissions) != 0 ? 1 : 0
+  count = var.storage_credential.cloud != "" ? 1 : 0
 
-  storage_credential = coalesce(try(databricks_storage_credential.azure[0].id, null), try(databricks_storage_credential.gcp[0].id, null))
+  storage_credential = try(databricks_storage_credential.this[0].id, null)
   dynamic "grant" {
     for_each = var.storage_credential.permissions
     content {
@@ -58,7 +56,7 @@ resource "databricks_external_location" "this" {
   name            = each.value.name
   owner           = each.value.owner
   url             = each.value.url
-  credential_name = coalesce(try(databricks_storage_credential.azure[0].id, null), try(databricks_storage_credential.gcp[0].id, null))
+  credential_name = coalesce(try(databricks_storage_credential.this[0].id, null), each.value.credentials_name)
   comment         = each.value.comment
   skip_validation = each.value.skip_validation
   read_only       = each.value.read_only
