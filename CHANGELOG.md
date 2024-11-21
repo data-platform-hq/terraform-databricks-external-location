@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.4.0...v1.5.0) (2024-11-21)
+
+
+### Features
+
+* merged aws and azure external location module ([efa2f97](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/efa2f979746dce4956803a48b79dea7d133d29c9))
+
 # [1.4.0](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.3.1...v1.4.0) (2024-09-10)
 
 
