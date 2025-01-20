@@ -13,8 +13,6 @@ locals {
 }
 
 resource "databricks_storage_credential" "this" {
-  count = var.storage_credential.cloud != "" ? 1 : 0
-
   name  = var.storage_credential.name
   owner = var.storage_credential.owner
 
@@ -38,7 +36,7 @@ resource "databricks_storage_credential" "this" {
 }
 
 resource "databricks_grants" "credential" {
-  count = var.storage_credential.cloud != "" ? 1 : 0
+  count = length(var.storage_credential.permissions) != 0 ? 1 : 0
 
   storage_credential = try(databricks_storage_credential.this[0].id, null)
   dynamic "grant" {
@@ -56,7 +54,7 @@ resource "databricks_external_location" "this" {
   name            = each.value.name
   owner           = each.value.owner
   url             = each.value.url
-  credential_name = coalesce(try(databricks_storage_credential.this[0].id, null), each.value.credentials_name)
+  credential_name = coalesce(try(databricks_storage_credential.this.id, null), each.value.credentials_name)
   comment         = each.value.comment
   skip_validation = each.value.skip_validation
   read_only       = each.value.read_only
