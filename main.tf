@@ -38,7 +38,7 @@ resource "databricks_storage_credential" "this" {
 resource "databricks_grants" "credential" {
   count = length(var.storage_credential.permissions) != 0 ? 1 : 0
 
-  storage_credential = try(databricks_storage_credential.this[0].id, null)
+  storage_credential = try(databricks_storage_credential.this.id, null)
   dynamic "grant" {
     for_each = var.storage_credential.permissions
     content {
