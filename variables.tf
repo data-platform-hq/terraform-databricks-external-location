@@ -5,7 +5,7 @@ variable "storage_credential" {
     owner                     = optional(string)       # Owner of resource
     force_destroy             = optional(bool, true)
     comment                   = optional(string, "Managed identity credential provisioned by Terraform")
-    create_storage_credential = optional(bool, true)   # "Boolean flag that determines whether to create storage credential or use the existing one"
+    create_storage_credential = optional(bool, true) # "Boolean flag that determines whether to create storage credential or use the existing one"
     permissions = optional(set(object({
       principal  = string
       privileges = list(string)
