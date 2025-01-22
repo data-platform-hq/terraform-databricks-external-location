@@ -13,7 +13,7 @@ locals {
 }
 
 resource "databricks_storage_credential" "this" {
-  count = var.storage_credential.create_storage_credential == true ? 1 : 0
+  count = var.storage_credential.create_storage_credential ? 1 : 0
 
   name  = var.storage_credential.name
   owner = var.storage_credential.owner
@@ -38,7 +38,7 @@ resource "databricks_storage_credential" "this" {
 }
 
 resource "databricks_grants" "credential" {
-  count = var.storage_credential.create_storage_credential == true ? (length(var.storage_credential.permissions) != 0 ? 1 : 0) : 0
+  count = var.storage_credential.create_storage_credential ? (length(var.storage_credential.permissions) != 0 ? 1 : 0) : 0
 
   storage_credential = try(databricks_storage_credential.this[0].id, null)
   dynamic "grant" {
