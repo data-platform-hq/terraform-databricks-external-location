@@ -13,14 +13,14 @@ locals {
 }
 
 resource "databricks_storage_credential" "this" {
-  count = var.storage_credential.cloud != "" ? 1 : 0
+  count = var.storage_credential.create_storage_credential ? 1 : 0
 
   name  = var.storage_credential.name
   owner = var.storage_credential.owner
 
   # Dynamic block for Azure
   dynamic "azure_managed_identity" {
-    for_each = var.storage_credential.cloud == "azure" ? [1] : []
+    for_each = var.cloud == "azure" ? [1] : []
     content {
       access_connector_id = var.storage_credential.azure_access_connector_id
     }
@@ -28,17 +28,17 @@ resource "databricks_storage_credential" "this" {
 
   # Dynamic block for GCP
   dynamic "databricks_gcp_service_account" {
-    for_each = var.storage_credential.cloud == "gcp" ? [1] : []
+    for_each = var.cloud == "gcp" ? [1] : []
     content {}
   }
 
   force_destroy  = var.storage_credential.force_destroy
   comment        = var.storage_credential.comment
-  isolation_mode = var.storage_credential.cloud == "azure" ? var.storage_credential.isolation_mode : null
+  isolation_mode = var.cloud == "azure" ? var.storage_credential.isolation_mode : null
 }
 
 resource "databricks_grants" "credential" {
-  count = var.storage_credential.cloud != "" ? 1 : 0
+  count = var.storage_credential.create_storage_credential ? (length(var.storage_credential.permissions) != 0 ? 1 : 0) : 0
 
   storage_credential = try(databricks_storage_credential.this[0].id, null)
   dynamic "grant" {
