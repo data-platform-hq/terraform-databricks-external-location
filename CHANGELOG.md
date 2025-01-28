@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.5.0...v1.5.1) (2025-01-28)
+
+
+### Bug Fixes
+
+* make defining permissions optional ([8e4f90b](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/8e4f90b4aed936b72b177d2039bbcc6b3a8596a1))
+
 # [1.5.0](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.4.0...v1.5.0) (2024-11-21)
 
 
