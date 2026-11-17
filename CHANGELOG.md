@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.5.1...v1.6.0) (2026-11-17)
+
+
+### Features
+
+* added credentials with iam ([b9f5d71](https://github.com/data-platform-hq/terraform-databricks-external-location/commit/b9f5d71e9a5d8d400d7ce72ee64831c67ca0fc05))
+
 ## [1.5.1](https://github.com/data-platform-hq/terraform-databricks-external-location/compare/v1.5.0...v1.5.1) (2025-01-28)
 
 
