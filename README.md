@@ -74,13 +74,16 @@ module "databricks_locations" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~>1.3 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.0.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.0.1 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | ~>1.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 6.0 |
 | <a name="provider_databricks"></a> [databricks](#provider\_databricks) | ~>1.0 |
 
 ## Modules
@@ -91,18 +94,23 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [aws_iam_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_role.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [databricks_external_location.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/external_location) | resource |
 | [databricks_grants.credential](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants) | resource |
 | [databricks_grants.locations](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants) | resource |
 | [databricks_storage_credential.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/storage_credential) | resource |
+| [databricks_aws_unity_catalog_assume_role_policy.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/data-sources/aws_unity_catalog_assume_role_policy) | data source |
+| [databricks_aws_unity_catalog_policy.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/data-sources/aws_unity_catalog_policy) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cloud"></a> [cloud](#input\_cloud) | Cloud (azure, aws or gcp) | `string` | n/a | yes |
-| <a name="input_external_locations"></a> [external\_locations](#input\_external\_locations) | List of object with external location configuration attributes | <pre>list(object({<br/>    index            = string                # Index of instance, for example short name, used later to access exact external location in output map<br/>    name             = string                # Custom whole name of resource<br/>    url              = string                # Path URL in cloud storage<br/>    credentials_name = optional(string)      # If storage_credential.create_storage_credential is set to false, provide id of existing storage credential here<br/>    owner            = optional(string)      # Owner of resource<br/>    skip_validation  = optional(bool, true)  # Suppress validation errors if any & force save the external location<br/>    read_only        = optional(bool, false) # Indicates whether the external location is read-only.<br/>    force_destroy    = optional(bool, true)<br/>    force_update     = optional(bool, true)<br/>    comment          = optional(string, "External location provisioned by Terraform")<br/>    permissions = optional(set(object({<br/>      principal  = string<br/>      privileges = list(string)<br/>    })), [])<br/>    isolation_mode = optional(string, "ISOLATION_MODE_OPEN")<br/>  }))</pre> | `[]` | no |
-| <a name="input_storage_credential"></a> [storage\_credential](#input\_storage\_credential) | Object with storage credentials configuration attributes | <pre>object({<br/>    azure_access_connector_id = optional(string, null) # Azure Databricks Access Connector Id<br/>    name                      = optional(string, null) # Custom whole name of resource<br/>    owner                     = optional(string)       # Owner of resource<br/>    force_destroy             = optional(bool, true)<br/>    comment                   = optional(string, "Managed identity credential provisioned by Terraform")<br/>    create_storage_credential = optional(bool, true) # "Boolean flag that determines whether to create storage credential or use the existing one"<br/>    permissions = optional(set(object({<br/>      principal  = string<br/>      privileges = list(string)<br/>    })), [])<br/>    isolation_mode = optional(string, "ISOLATION_MODE_OPEN")<br/>  })</pre> | n/a | yes |
+| <a name="input_aws_credentials"></a> [aws\_credentials](#input\_aws\_credentials) | AWS configuration for storage credential and IAM role lifecycle. Required when storage\_credential.cloud = 'aws'. | <pre>object({<br/>    account_id            = optional(string, null)<br/>    iam_role_name         = optional(string, null)<br/>    iam_role_boundary_arn = optional(string, null)<br/>    bucket_names          = optional(map(string), {})<br/>  })</pre> | `{}` | no |
+| <a name="input_external_locations"></a> [external\_locations](#input\_external\_locations) | List of object with external location configuration attributes | <pre>list(object({<br/>    index            = string # Index of instance, for example short name, used later to access exact external location in output map<br/>    name             = string # Custom whole name of resource<br/>    url              = string # Path URL in cloud storage<br/>    credentials_name = optional(string)<br/>    owner            = optional(string)      # Owner of resource<br/>    skip_validation  = optional(bool, true)  # Suppress validation errors if any & force save the external location<br/>    read_only        = optional(bool, false) # Indicates whether the external location is read-only.<br/>    force_destroy    = optional(bool, true)<br/>    force_update     = optional(bool, true)<br/>    comment          = optional(string, "External location provisioned by Terraform")<br/>    permissions = optional(set(object({<br/>      principal  = string<br/>      privileges = list(string)<br/>    })), [])<br/>    isolation_mode = optional(string, "ISOLATION_MODE_OPEN")<br/>  }))</pre> | `[]` | no |
+| <a name="input_storage_credential"></a> [storage\_credential](#input\_storage\_credential) | Object with storage credentials configuration attributes | <pre>object({<br/>    azure_access_connector_id = optional(string, null) # Azure Databricks Access Connector Id<br/>    cloud                     = optional(string, "")<br/>    name                      = optional(string, null) # Custom whole name of resource<br/>    owner                     = optional(string)       # Owner of resource<br/>    force_destroy             = optional(bool, true)<br/>    comment                   = optional(string, "Managed identity credential provisioned by Terraform")<br/>    create_storage_credential = optional(bool, true)   # Create new credential or use existing one<br/>    permissions = optional(set(object({<br/>      principal  = string<br/>      privileges = list(string)<br/>    })), [])<br/>    isolation_mode = optional(string, "ISOLATION_MODE_OPEN")<br/>  })</pre> | n/a | yes |
 
 ## Outputs
 
